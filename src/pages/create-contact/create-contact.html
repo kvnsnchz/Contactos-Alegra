@@ -6,14 +6,28 @@
   </ion-navbar>
 
 </ion-header>
-
-
 <ion-content padding>
-  <form [formGroup]="contact" (ngSubmit)="logForm()">
-    <ion-item>
-      <ion-label>Name</ion-label>
-      <ion-input type="text" formControlName="name"></ion-input>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!contact.valid">Submit</button>
-  </form>
+    <ion-card>
+        <form [formGroup]="contact" (ngSubmit)="logForm()">
+    
+          <ion-list>
+              <ion-item *ngFor="let input of inputs">
+                  <ion-label floating *ngIf="input.type!='checkBox'" >{{input.title}}</ion-label>
+                  <ion-label fixed *ngIf="input.type=='checkBox'" >{{input.title}}</ion-label>
+                  <ion-input *ngIf="input.type!='textarea' && input.type!='checkBox'" type={{input.type}} formControlName="{{input.name}}" ></ion-input>
+                  <ion-textarea *ngIf="input.type=='textarea'" formControlName="{{input.name}}"></ion-textarea>
+                  <ion-checkbox *ngIf="input.type=='checkBox'"  formControlName={{input.name}} ></ion-checkbox>
+              </ion-item>
+          </ion-list>
+          <ion-item >
+            <ion-buttons end>
+              <button ion-button type="submit" [disabled]="!contact.valid" >Submit</button>
+            </ion-buttons>
+            
+          </ion-item>
+          
+        </form>
+    
+    </ion-card>
+    
 </ion-content>

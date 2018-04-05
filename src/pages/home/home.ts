@@ -13,18 +13,34 @@ export class HomePage {
   inSearch = false;
   contacts = [];
   items = [];
-  index = 0;
+  create = false;
   constructor(public navCtrl: NavController,public contact: ContactServiceProvider,public alertCtrl: AlertController) {
   
   }
   ionViewDidLoad(){
-    this.data = this.contact.getContacts(this.index);
+    this.create = true;
+    this.data = this.contact.getContacts(0);
     this.data.subscribe(
+      (data)=> {this.contacts = data;
+                this.initializeItems();
+              },
+      (error)=> {console.log(error);}
+    );
+  
+
+  }
+  ionViewWillEnter(){
+    if(!this.create){
+      this.data.subscribe(
       (data)=> {this.contacts = data;
                 this.initializeItems();},
       (error)=> {console.log(error);}
-    )
-
+      );
+    }
+    else{
+      this.create = false;
+    }
+    
   }
   
   initializeItems() {
@@ -95,8 +111,7 @@ export class HomePage {
     );
   }
   doInfinite(infiniteScroll) {
-    this.index++;
-    this.contact.getContacts(this.index)
+    this.contact.getContacts(this.contacts.length)
     .subscribe(
       (data)=> {
         this.contacts = this.contacts.concat(data);
