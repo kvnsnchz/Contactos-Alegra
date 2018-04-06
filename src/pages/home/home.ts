@@ -14,6 +14,7 @@ export class HomePage {
   contacts = [];
   items = [];
   create = false;
+  showDelete = false;
   constructor(public navCtrl: NavController,public contact: ContactServiceProvider,public alertCtrl: AlertController) {
   
   }
@@ -42,9 +43,28 @@ export class HomePage {
     }
     
   }
-  
+  isNull(value){
+    return (value==null || value == '');
+  }
+  comparate(valueContact,value){
+    if(this.isNull(valueContact)){
+      return false;
+    }
+    return (valueContact.toLowerCase().indexOf(value.toLowerCase()) > -1);
+  }
   initializeItems() {
     this.items = this.contacts;
+  }
+  clickItem(contact){
+    if(this.showDelete){
+      this.showConfirm(contact);
+    }
+    else{
+      this.viewContact(contact);
+    }
+  }
+  setDelete(){
+    this.showDelete = !this.showDelete;
   }
   setSearch(){
     this.inSearch = !this.inSearch;
@@ -54,7 +74,7 @@ export class HomePage {
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.items = this.items.filter((item) => {
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (this.comparate(item.name,val) || this.comparate(item.identification,val) || this.comparate(item.phonePrimary,val) || this.comparate(item.email,val));
       })
     }
   }
@@ -69,12 +89,9 @@ export class HomePage {
     this.navCtrl.push(CreateContactPage,{contacts:this.contacts, items:this.items});
   }
   delete(contact){
-    this.contact.deleteContacts(contact.id).subscribe(
-      (data) => {
-        this.contacts.splice(this.contacts.indexOf(contact),1);
-        this.items.splice(this.items.indexOf(contact),1);
-      }
-    );
+    this.contacts.splice(this.contacts.indexOf(contact),1);
+    this.items.splice(this.items.indexOf(contact),1);
+    this.contact.deleteContacts(contact.id).subscribe();
   }
   showConfirm(contact){
     let confirm = this.alertCtrl.create({
@@ -102,6 +119,7 @@ export class HomePage {
       (data)=> {
         this.contacts = data;
         this.initializeItems();
+        this.inSearch = false;
         refresher.complete();
       },
       (error)=> {
@@ -116,6 +134,7 @@ export class HomePage {
       (data)=> {
         this.contacts = this.contacts.concat(data);
         this.initializeItems();
+        this.inSearch = false;
         infiniteScroll.complete();
       },
       (error)=> {

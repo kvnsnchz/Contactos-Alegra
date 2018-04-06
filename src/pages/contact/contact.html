@@ -7,12 +7,28 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{contact.name}}</ion-title>
+    <ion-title>Details Contact</ion-title>
+    <ion-buttons end>
+      <button ion-button *ngIf="!withoutPhone()" color="danger"  clear icon-only (click)="call()">
+        <ion-icon name="call"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <ion-card>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let contact of items" >
+            <h2 >{{ contact.name }}</h2>
+            <p item-end>{{contact.value}}</p>
+        </ion-col>
+      </ion-row>
+        
+    </ion-grid>
+  </ion-card>
 </ion-content>
+t

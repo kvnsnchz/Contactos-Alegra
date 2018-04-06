@@ -47,7 +47,6 @@ export class ContactServiceProvider {
       type : vect 
 
     };
-    console.log(c);
     return this.http.post('https://app.alegra.com/api/v1/contacts',c, this.httpOptions);
   }
   getContact(id){

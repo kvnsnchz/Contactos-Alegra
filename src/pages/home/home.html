@@ -7,8 +7,14 @@
       <button ion-button color="secondary" clear icon-only (click)="viewCreateContact()">
         <ion-icon name="add"></ion-icon>
       </button>
-      <button ion-button color="secondary" clear icon-only (click)="setSearch()">
+      <button ion-button color="dark" clear icon-only (click)="setSearch()">
           <ion-icon name="search"></ion-icon>
+      </button>
+      <button ion-button color="danger" *ngIf="!showDelete" clear icon-only (click)="setDelete()">
+          <ion-icon name="trash"></ion-icon>
+      </button>
+      <button ion-button color="primary" *ngIf="showDelete" clear icon-only (click)="setDelete()">
+          <ion-icon name="eye"></ion-icon>
       </button>
     </ion-buttons>
     <ion-searchbar *ngIf="inSearch" showCancelButton="true" (ionInput)="onSearch($event)" (ionCancel)="endSearch()"></ion-searchbar>
@@ -21,13 +27,19 @@
   </ion-refresher>
   
   <ion-list>
-    <button ion-item *ngFor="let contact of items"  >
-      <h2>{{ contact.name }}</h2>
-      <p>{{ contact.id }}</p>
-      <button ion-button color="danger" clear icon-only item-right (click)="showConfirm(contact)">
-          <ion-icon name="trash"></ion-icon>
-      </button>
-    </button>
+    <ion-item *ngFor="let contact of items"  (click)="clickItem(contact)" >
+      <ion-icon *ngIf="showDelete" name="trash" item-end></ion-icon>
+      <ion-icon *ngIf="!showDelete" name="arrow-forward" item-end></ion-icon>
+      <h1>{{ contact.name }}</h1>
+      <ion-row>
+          <ion-col *ngIf="!isNull(contact.identification)"><ion-icon  name="card" ></ion-icon>   {{ contact.identification }} </ion-col> 
+          <ion-col *ngIf="!isNull(contact.phonePrimary)"><ion-icon   name="call" ></ion-icon> {{ contact.phonePrimary }}  </ion-col>
+          <ion-col *ngIf="!isNull(contact.email)"> <ion-icon  name="mail" ></ion-icon>   {{ contact.email }}</ion-col>  
+         
+      </ion-row> 
+      
+      
+    </ion-item>
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">

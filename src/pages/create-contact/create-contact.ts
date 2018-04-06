@@ -47,17 +47,26 @@ export class CreateContactPage {
     this.inputs.push({name:'provider',type:'checkBox',title:'PROVIDER'});
   }
   logForm(){
-    let loader = this.loaderCtrl.create();
-    loader.present();
+    let wait= this.alertCtrl.create({
+      title: 'Wait',
+      message: 'Creating Contact...',
+      buttons: []
+    });
+    wait.present();
+    
     this.contactService.addContact(this.contact.value).subscribe(
       (data) => {
+        wait.dismiss();
         this.showOK();
-         loader.dismiss();
       },
       (error) => {
+        wait.dismiss();
         console.log(error);
-        loader.dismiss();
     });
+    
+    
+  }
+  wait(){
     
   }
   showOK(){

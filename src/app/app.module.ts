@@ -10,6 +10,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { CreateContactPage } from '../pages/create-contact/create-contact';
 import { ContactServiceProvider } from '../providers/contact-service/contact-service';
 import { HttpClientModule} from '@angular/common/http';
+import { CallNumber } from '@ionic-native/call-number';
 @NgModule({
   declarations: [
     MyApp,
@@ -32,6 +33,7 @@ import { HttpClientModule} from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
+    CallNumber,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ContactServiceProvider
   ]
