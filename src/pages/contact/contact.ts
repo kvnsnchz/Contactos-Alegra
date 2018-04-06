@@ -1,12 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController,Platform} from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
-/**
- * Generated class for the ContactPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
 
 @IonicPage()
 @Component({
@@ -16,7 +11,7 @@ import { CallNumber } from '@ionic-native/call-number';
 export class ContactPage {
   contact;
   items = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams,public callNumber: CallNumber,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public callNumber: CallNumber,public alertCtrl: AlertController,public plt: Platform) {
     this.contact = navParams.data.contact;
     this.initializeItems();
   }
@@ -35,8 +30,12 @@ export class ContactPage {
   isNull(value){
     return (value==null || value == '');
   }
+  
   withoutPhone(){
     return this.isNull(this.contact.phonePrimary) && this.isNull(this.contact.phoneSecondary) && this.isNull(this.contact.mobile);
+  }
+  showCall(){
+    return this.plt.is('mobile') && !this.withoutPhone();
   }
   callTel(tel) {
     window.location.href = 'tel:'+ tel;

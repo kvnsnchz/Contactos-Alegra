@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-title>Details Contact</ion-title>
     <ion-buttons end>
-      <button ion-button *ngIf="!withoutPhone()" color="danger"  clear icon-only (click)="call()">
+      <button ion-button *ngIf="showCall()" color="danger"  clear icon-only (click)="call()">
         <ion-icon name="call"></ion-icon>
       </button>
     </ion-buttons>
